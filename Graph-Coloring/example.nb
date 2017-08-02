@@ -1,0 +1,463 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     16882,        454]
+NotebookOptionsPosition[     15384,        397]
+NotebookOutlinePosition[     15875,        417]
+CellTagsIndexPosition[     15832,        414]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Graph coloring package", "Title",
+ CellChangeTimes->{{3.653891594720069*^9, 3.653891598238164*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Loading the package", "Section",
+ CellChangeTimes->{{3.6538916369867306`*^9, 3.6538916530365324`*^9}}],
+
+Cell["Remember:", "Text",
+ CellChangeTimes->{{3.65389166859663*^9, 3.653891674356674*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+The file graphcoloring.wl must be in the same folder that your notebook file.\
+\>", "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917280499434`*^9}, {
+  3.6538922064258375`*^9, 3.6538922064258375`*^9}}],
+
+Cell[TextData[{
+ "You must change the directory where ",
+ StyleBox["Mathematica ",
+  FontSlant->"Italic"],
+ "searchs packages (to the current one)."
+}], "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917280499434`*^9}, {
+  3.6538922064258375`*^9, 3.653892235216775*^9}}],
+
+Cell["\<\
+Typically, save first the notebook and then load the package as follows:\
+\>", "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917588825502`*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6538921903464603`*^9, 3.6538921903621397`*^9}, 
+   3.6538929905521665`*^9}],
+
+Cell[BoxData[
+ RowBox[{"<<", "graphcoloring.wl"}]], "Input",
+ CellChangeTimes->{{3.6538904573922577`*^9, 3.6538904683250413`*^9}, 
+   3.653890502017991*^9, 3.6538908343362226`*^9, {3.6538908737263193`*^9, 
+   3.6538909059345303`*^9}, {3.653892179500555*^9, 3.6538921815867023`*^9}, {
+   3.653892388111393*^9, 3.6538923901188884`*^9}, 3.6538924477071915`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Examples", "Section",
+ CellChangeTimes->{{3.6538916589454207`*^9, 3.6538916604585853`*^9}}],
+
+Cell["\<\
+First, let\[CloseCurlyQuote]s create a graph using mathematica built-in \
+function Graph[]\
+\>", "Text",
+ CellChangeTimes->{{3.6538930457995787`*^9, 3.6538930896920376`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"G1", "=", 
+  RowBox[{"Graph", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"1", "\[UndirectedEdge]", "2"}], ",", 
+      RowBox[{"2", "\[UndirectedEdge]", "3"}], ",", 
+      RowBox[{"3", "\[UndirectedEdge]", "4"}], ",", 
+      RowBox[{"4", "\[UndirectedEdge]", "1"}], ",", 
+      RowBox[{"3", "\[UndirectedEdge]", "5"}]}], "}"}], ",", 
+    RowBox[{"VertexLabels", "\[Rule]", "\"\<Index\>\""}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6538909355156174`*^9, 3.653890937487771*^9}, {
+  3.653892253467272*^9, 3.6538922550778985`*^9}, {3.6538929470399146`*^9, 
+  3.653892950619213*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  NamespaceBox["NetworkGraphics",
+   DynamicModuleBox[{Typeset`graph = HoldComplete[
+     Graph[{1, 2, 3, 4, 5}, {
+      Null, {{1, 2}, {2, 3}, {3, 4}, {4, 1}, {3, 5}}}, {
+      VertexLabels -> {"Index"}}]]}, 
+    TagBox[GraphicsGroupBox[{
+       {Hue[0.6, 0.7, 0.5], Opacity[0.7], 
+        {Arrowheads[0.], 
+         ArrowBox[{{0., 0.5668955510012661}, {0.7342868348648834, 
+          1.1327554528790968`}}, 0.02780373911210364]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0., 0.5668955510012661}, {0.7329446339070858, 0.}}, 
+          0.02780373911210364]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.7342868348648834, 1.1327554528790968`}, {
+          1.600379196875706, 0.5664101027543705}}, 0.02780373911210364]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{1.600379196875706, 0.5664101027543705}, {
+          0.7329446339070858, 0.}}, 0.02780373911210364]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{1.600379196875706, 0.5664101027543705}, {
+          2.6671129171031938`, 0.5662586888757046}}, 0.02780373911210364]}}, 
+       {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[
+        0.7]}], {DiskBox[{0., 0.5668955510012661}, 0.02780373911210364], 
+         InsetBox["1", 
+          Offset[{2, 2}, {0.02780373911210364, 0.5946992901133697}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.7342868348648834, 1.1327554528790968`}, 
+          0.02780373911210364], 
+         InsetBox["2", 
+          Offset[{2, 2}, {0.7620905739769871, 1.1605591919912004`}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{1.600379196875706, 0.5664101027543705}, 
+          0.02780373911210364], 
+         InsetBox["3", 
+          Offset[{2, 2}, {1.6281829359878095`, 0.5942138418664742}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.7329446339070858, 0.}, 0.02780373911210364], 
+         InsetBox["4", 
+          Offset[{2, 2}, {0.7607483730191894, 0.02780373911210364}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{2.6671129171031938`, 0.5662586888757046}, 
+          0.02780373911210364], 
+         InsetBox["5", 
+          Offset[{2, 2}, {2.6949166562152973`, 0.5940624279878083}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}}}],
+     MouseAppearanceTag["NetworkGraphics"]],
+    AllowKernelInitialization->False]],
+  DefaultBaseStyle->{
+   "NetworkGraphics", FrontEnd`GraphicsHighlightColor -> Hue[0.8, 1., 0.6]},
+  FrameTicks->None,
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]]]], "Output",
+ CellChangeTimes->{{3.6538922505267687`*^9, 3.6538922557477674`*^9}, 
+   3.6538923511223335`*^9, 3.653892479535889*^9, 3.653892823147149*^9, 
+   3.6538929511171*^9, 3.6538930323628564`*^9}]
+}, Open  ]],
+
+Cell["\<\
+Now, let\[CloseCurlyQuote]s use the package. It has only one function, \
+colorGraph[]. Its arguments are:\
+\>", "Text",
+ CellChangeTimes->{{3.653891765448386*^9, 3.653891769170888*^9}, {
+  3.6538930982196307`*^9, 3.6538931466147537`*^9}, {3.653893193878255*^9, 
+  3.6538932558109007`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["The graph you want to color.", "ItemNumbered"]], \
+"ItemNumbered",
+ CellChangeTimes->{{3.6538931767626886`*^9, 3.653893179766734*^9}, 
+   3.6538933032322693`*^9}],
+
+Cell[TextData[{
+ "The number of colors you want to use. You can only choose ",
+ StyleBox["3",
+  FontWeight->"Bold"],
+ " or ",
+ StyleBox["4",
+  FontWeight->"Bold"],
+ " as the number of colors."
+}], "ItemNumbered",
+ CellChangeTimes->{{3.6538931767626886`*^9, 3.653893180064563*^9}, {
+  3.653893281532648*^9, 3.653893298310328*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"colorGraph", "[", 
+  RowBox[{"G1", ",", "3"}], "]"}]], "Input",
+ CellChangeTimes->{{3.65389093923985*^9, 3.653891017643407*^9}, 
+   3.6538911068167353`*^9, 3.6538913773782725`*^9, {3.653892955235708*^9, 
+   3.6538929605391936`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{Private`i$$ = 1, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[Private`i$$], 1, 36, 1}}, Typeset`size$$ = {360., {82., 86.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Private`i$22199$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {Private`i$$ = 1}, "ControllerVariables" :> {
+        Hold[Private`i$$, Private`i$22199$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> GraphPlot[
+        Graph[{1, 2, 3, 4, 5}, {
+         Null, {{1, 2}, {2, 3}, {3, 4}, {4, 1}, {3, 5}}}, {
+         VertexLabels -> {"Index"}}], VertexRenderingFunction -> ({
+          Switch[
+           Part[
+            Part[
+             Part[Private`sol$22155, Private`i$$], #2], 2], 0, Red, 1, Green, 
+           2, Yellow], 
+          EdgeForm[Black], 
+          Disk[#, 0.1], Black, 
+          Text[#2, #]}& )], "Specifications" :> {{Private`i$$, 1, 36, 1}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{411., {140., 147.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.6538922569304857`*^9, 3.653892354085164*^9, 
+  3.6538923990630474`*^9, 3.653892480834593*^9, 3.6538928349927654`*^9, 
+  3.6538929610793676`*^9}]
+}, Open  ]],
+
+Cell["Another example:", "Text",
+ CellChangeTimes->{{3.653893316281706*^9, 3.653893319399023*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"G2", "=", 
+  RowBox[{"Graph", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"1", "\[UndirectedEdge]", "2"}], ",", 
+      RowBox[{"2", "\[UndirectedEdge]", "3"}], ",", 
+      RowBox[{"3", "\[UndirectedEdge]", "4"}], ",", 
+      RowBox[{"4", "\[UndirectedEdge]", "1"}], ",", 
+      RowBox[{"1", "\[UndirectedEdge]", "5"}], ",", 
+      RowBox[{"3", "\[UndirectedEdge]", "5"}], ",", 
+      RowBox[{"4", "\[UndirectedEdge]", "5"}]}], "}"}], ",", 
+    RowBox[{"VertexLabels", "\[Rule]", "\"\<Index\>\""}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6538911788870244`*^9, 3.6538911801063075`*^9}, {
+  3.6538929637209682`*^9, 3.653892964049131*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[
+  NamespaceBox["NetworkGraphics",
+   DynamicModuleBox[{Typeset`graph = HoldComplete[
+     Graph[{1, 2, 3, 4, 5}, {
+      Null, {{1, 2}, {2, 3}, {3, 4}, {4, 1}, {1, 5}, {3, 5}, {4, 5}}}, {
+      VertexLabels -> {"Index"}}]]}, 
+    TagBox[GraphicsGroupBox[{
+       {Hue[0.6, 0.7, 0.5], Opacity[0.7], 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.8311480195746793, 0.9788201877459137}, {
+          1.7746656402646344`, 0.4899393598676033}}, 0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.8311480195746793, 0.9788201877459137}, {0., 
+          0.13285328760604875`}}, 0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.8311480195746793, 0.9788201877459137}, {
+          0.0002698422985378812, 0.8472176895166402}}, 
+          0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{1.7746656402646344`, 0.4899393598676033}, {
+          0.8307644269058341, 0.}}, 0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.8307644269058341, 0.}, {0., 0.13285328760604875`}}, 
+          0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0.8307644269058341, 0.}, {0.0002698422985378812, 
+          0.8472176895166402}}, 0.020756496683452863`]}, 
+        {Arrowheads[0.], 
+         ArrowBox[{{0., 0.13285328760604875`}, {0.0002698422985378812, 
+          0.8472176895166402}}, 0.020756496683452863`]}}, 
+       {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[
+        0.7]}], {
+         DiskBox[{0.8311480195746793, 0.9788201877459137}, 
+          0.020756496683452863`], 
+         InsetBox["1", 
+          Offset[{2, 2}, {0.8519045162581322, 0.9995766844293665}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{1.7746656402646344`, 0.4899393598676033}, 
+          0.020756496683452863`], 
+         InsetBox["2", 
+          Offset[{2, 2}, {1.7954221369480872`, 0.5106958565510562}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.8307644269058341, 0.}, 0.020756496683452863`], 
+         InsetBox["3", 
+          Offset[{2, 2}, {0.8515209235892869, 0.020756496683452863`}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0., 0.13285328760604875`}, 0.020756496683452863`], 
+         InsetBox["4", 
+          Offset[{2, 2}, {0.020756496683452863`, 0.15360978428950162`}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.0002698422985378812, 0.8472176895166402}, 
+          0.020756496683452863`], 
+         InsetBox["5", 
+          Offset[{2, 2}, {0.021026338981990744`, 0.8679741862000931}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}}}],
+     MouseAppearanceTag["NetworkGraphics"]],
+    AllowKernelInitialization->False]],
+  DefaultBaseStyle->{
+   "NetworkGraphics", FrontEnd`GraphicsHighlightColor -> Hue[0.8, 1., 0.6]},
+  FrameTicks->None,
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]]]], "Output",
+ CellChangeTimes->{3.653892482335634*^9, 3.6538928365770407`*^9, 
+  3.653892965785697*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"colorGraph", "[", 
+  RowBox[{"G2", ",", "4"}], "]"}]], "Input",
+ CellChangeTimes->{{3.653891181797779*^9, 3.653891208051174*^9}, {
+  3.6538929695072145`*^9, 3.6538929726580467`*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{Private`i$$ = 120, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[Private`i$$], 1, 120, 1}}, Typeset`size$$ = {360., {106., 109.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Private`i$22762$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {Private`i$$ = 1}, "ControllerVariables" :> {
+        Hold[Private`i$$, Private`i$22762$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> GraphPlot[
+        Graph[{1, 2, 3, 4, 5}, {
+         Null, {{1, 2}, {2, 3}, {3, 4}, {4, 1}, {1, 5}, {3, 5}, {4, 5}}}, {
+         VertexLabels -> {"Index"}}], VertexRenderingFunction -> ({
+          Switch[
+           Part[
+            Part[
+             Part[Private`sol$22642, Private`i$$], #2], 2], 1, Red, -1, Green,
+            I, Yellow, -I, Brown], 
+          EdgeForm[Black], 
+          Disk[#, 0.1], Black, 
+          Text[#2, #]}& )], "Specifications" :> {{Private`i$$, 1, 120, 1}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{411., {164., 171.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.6538924838167725`*^9, 3.653892838209614*^9, 
+  3.653892973277748*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{784, 801},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrintingCopies->1,
+PrintingPageRange->{32000, 32000},
+PrintingOptions->{"Magnification"->1.,
+"PaperOrientation"->"Portrait",
+"PaperSize"->{612, 792}},
+FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 29, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 105, 1, 90, "Title"],
+Cell[CellGroupData[{
+Cell[710, 27, 108, 1, 63, "Section"],
+Cell[821, 30, 90, 1, 30, "Text"],
+Cell[CellGroupData[{
+Cell[936, 35, 222, 4, 29, "Item"],
+Cell[1161, 41, 279, 7, 29, "Item"],
+Cell[1443, 50, 164, 3, 29, "Item"]
+}, Open  ]],
+Cell[1622, 56, 221, 5, 31, "Input"],
+Cell[1846, 63, 358, 5, 31, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2241, 73, 97, 1, 63, "Section"],
+Cell[2341, 76, 184, 4, 30, "Text"],
+Cell[CellGroupData[{
+Cell[2550, 84, 626, 14, 31, "Input"],
+Cell[3179, 100, 2825, 62, 188, "Output"]
+}, Open  ]],
+Cell[6019, 165, 299, 6, 30, "Text"],
+Cell[CellGroupData[{
+Cell[6343, 175, 186, 3, 30, "ItemNumbered"],
+Cell[6532, 180, 329, 10, 30, "ItemNumbered"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6898, 195, 256, 5, 31, "Input"],
+Cell[7157, 202, 2022, 43, 304, "Output"]
+}, Open  ]],
+Cell[9194, 248, 98, 1, 30, "Text"],
+Cell[CellGroupData[{
+Cell[9317, 253, 683, 15, 31, "Input"],
+Cell[10003, 270, 3114, 69, 231, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13154, 344, 206, 4, 31, "Input"],
+Cell[13363, 350, 1981, 42, 352, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

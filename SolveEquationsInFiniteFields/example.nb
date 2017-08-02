@@ -1,0 +1,555 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     18395,        546]
+NotebookOptionsPosition[     17091,        495]
+NotebookOutlinePosition[     17584,        515]
+CellTagsIndexPosition[     17541,        512]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Solve equations in Finite Fields", "Title",
+ CellChangeTimes->{{3.653891594720069*^9, 3.653891598238164*^9}, {
+  3.655981152849069*^9, 3.65598115857927*^9}}],
+
+Cell[TextData[StyleBox["Adri\[AAcute]n",
+ FontWeight->"Bold",
+ FontSlant->"Italic"]], "Subsubtitle",
+ CellChangeTimes->{{3.6559894407645135`*^9, 3.655989443900649*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Loading the package", "Section",
+ CellChangeTimes->{{3.6538916369867306`*^9, 3.6538916530365324`*^9}}],
+
+Cell["Remember:", "Text",
+ CellChangeTimes->{{3.65389166859663*^9, 3.653891674356674*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+The file solvefinitefield.wl must be in the same folder that your notebook \
+file.\
+\>", "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917280499434`*^9}, {
+   3.6538922064258375`*^9, 3.6538922064258375`*^9}, 3.6559794976281443`*^9}],
+
+Cell[TextData[{
+ "You must change the directory where ",
+ StyleBox["Mathematica ",
+  FontSlant->"Italic"],
+ "searchs packages (to the current one)."
+}], "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917280499434`*^9}, {
+  3.6538922064258375`*^9, 3.653892235216775*^9}}],
+
+Cell["\<\
+Typically, save first the notebook and then load the package as follows:\
+\>", "Item",
+ CellChangeTimes->{{3.653891678941537*^9, 3.6538917588825502`*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.6538921903464603`*^9, 3.6538921903621397`*^9}, 
+   3.6538929905521665`*^9}],
+
+Cell[BoxData[
+ RowBox[{"<<", "solvefinitefield.wl"}]], "Input",
+ CellChangeTimes->{{3.6538904573922577`*^9, 3.6538904683250413`*^9}, 
+   3.653890502017991*^9, 3.6538908343362226`*^9, {3.6538908737263193`*^9, 
+   3.6538909059345303`*^9}, {3.653892179500555*^9, 3.6538921815867023`*^9}, {
+   3.653892388111393*^9, 3.6538923901188884`*^9}, 3.6538924477071915`*^9, 
+   3.6559794985187707`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Examples", "Section",
+ CellChangeTimes->{{3.6538916589454207`*^9, 3.6538916604585853`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ StyleBox[
+  RowBox[{"solveGF", "::", "usage"}], "MessageName"]], "Input",
+ CellChangeTimes->{{3.655980191117858*^9, 3.6559802159501476`*^9}}],
+
+Cell[BoxData["\<\"solveGF[p,n,variables,ideal] finds the solutions of the \
+equations given by the ideal (without '== 0') in GF(p^n).\"\>"], "Output",
+ CellChangeTimes->{
+  3.655981036432113*^9, {3.655981073041541*^9, 3.6559810869721265`*^9}, 
+   3.661436447889279*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"solveGF", "[", 
+  RowBox[{"2", ",", "3", ",", 
+   RowBox[{"{", 
+    RowBox[{"X", ",", "Y"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "^", "2"}], "-", "X"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.655979509213729*^9, 3.6559795357208447`*^9}, {
+  3.655980233301674*^9, 3.655980239280506*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", "0"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", "1"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", "\[FormalX]"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", "\[FormalX]"}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      SuperscriptBox["\[FormalX]", "2"]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"\[FormalX]", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", "\[FormalX]", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", "0"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", "1"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", "\[FormalX]"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", "\[FormalX]"}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      SuperscriptBox["\[FormalX]", "2"]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"\[FormalX]", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "1"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      RowBox[{"1", "+", "\[FormalX]", "+", 
+       SuperscriptBox["\[FormalX]", "2"]}]}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.6559806249281387`*^9, {3.6559806624621134`*^9, 3.6559806663958817`*^9}, 
+   3.6559807358477983`*^9, {3.6559807850288553`*^9, 3.6559808004070935`*^9}, 
+   3.655980831368665*^9, 3.655980875194458*^9, {3.6559809320026975`*^9, 
+   3.655980949653381*^9}, {3.6559810140042257`*^9, 3.655981037897953*^9}, {
+   3.6559810748456755`*^9, 3.6559810948636503`*^9}, 3.6614364496690445`*^9, 
+   3.6614365574748607`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"solveGF", "[", 
+  RowBox[{"2", ",", "3", ",", 
+   RowBox[{"{", 
+    RowBox[{"X", ",", "Y"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"X", "^", "2"}], "-", "X"}], ",", " ", 
+     RowBox[{"Y", " ", "+", " ", "1"}]}], "}"}], ",", "False", ",", "True"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.661436470461764*^9, 3.6614364746701403`*^9}, {
+  3.661436624866054*^9, 3.6614366285061045`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Simple solutions \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"Y", "\[Rule]", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nVars solved \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "Y", "}"}], "\[InvisibleSpace]", "\<\"\\nAll vars \"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"X", ",", "Y"}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nVars to solve \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "X", "}"}], "\[InvisibleSpace]", "\<\"\\nIdeal before \"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"1", "+", "Y"}], ",", 
+     RowBox[{"X", "+", 
+      SuperscriptBox["X", "2"]}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nIdeal after \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"X", "+", 
+     SuperscriptBox["X", "2"]}], "}"}]}],
+  SequenceForm[
+  "Simple solutions ", {$CellContext`Y -> 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}]}, 
+   "\nVars solved ", {$CellContext`Y}, 
+   "\nAll vars ", {$CellContext`X, $CellContext`Y}, 
+   "\nVars to solve ", {$CellContext`X}, "\nIdeal before ", {
+   1 + $CellContext`Y, $CellContext`X + $CellContext`X^2}, 
+   "\nIdeal after ", {$CellContext`X + $CellContext`X^2}],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.6614364752482357`*^9, {3.6614365583655176`*^9, 3.6614365788104115`*^9}, 
+   3.661436629149022*^9, 3.6614368600983706`*^9}],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Solutions \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"X", "\[Rule]", "0"}], ",", 
+       RowBox[{"Y", "\[Rule]", 
+        SubscriptBox[
+         RowBox[{"{", 
+          RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"X", "\[Rule]", 
+        SubscriptBox[
+         RowBox[{"{", 
+          RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}], ",", 
+       RowBox[{"Y", "\[Rule]", 
+        SubscriptBox[
+         RowBox[{"{", 
+          RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nSolutions(tuple index) \"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"1", ",", "2"}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nAssignations \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "0", "}"}], ",", 
+     RowBox[{"{", "0", "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "1", ",", "0"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "1", ",", "0"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "1"}], "}"}], "2"], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nRelations \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1", ",", "0"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "0"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"0", ",", "0", ",", "1"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0", ",", "1"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1", ",", "1"}], "}"}], "2"]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"X", "\[Rule]", 
+       SubscriptBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "1", ",", "1"}], "}"}], "2"]}], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nGroebnerBasis \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"X", "+", 
+     SuperscriptBox["X", "2"]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nTuples \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", "0", "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1", ",", "0"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "1", ",", "0"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"0", ",", "0", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"0", ",", "1", ",", "1"}], "}"}], "2"], "}"}], ",", 
+     RowBox[{"{", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "1", ",", "1"}], "}"}], "2"], "}"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nElements of GF \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"0", ",", "1", ",", "0"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"1", ",", "1", ",", "0"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0", ",", "1"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"1", ",", "0", ",", "1"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"0", ",", "1", ",", "1"}], "}"}], "2"], ",", 
+     SubscriptBox[
+      RowBox[{"{", 
+       RowBox[{"1", ",", "1", ",", "1"}], "}"}], "2"]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nIdeal \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "X"}], "+", 
+      SuperscriptBox["X", "2"]}], ",", 
+     RowBox[{"1", "+", "Y"}]}], "}"}], 
+   "\[InvisibleSpace]", "\<\"\\nVariables \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "X", "}"}]}],
+  SequenceForm[
+  "Solutions ", {{$CellContext`X -> 0, $CellContext`Y -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}], $CellContext`Y -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}]}}, 
+   "\nSolutions(tuple index) ", {1, 2}, "\nAssignations ", {{0}, {0}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 0}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 0}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 1}]}}, 
+   "\nRelations ", {{$CellContext`X -> 0}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 0}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 0}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 0, 1}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 1}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 1}]}, {$CellContext`X -> 
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 1}]}}, 
+   "\nGroebnerBasis ", {$CellContext`X + $CellContext`X^2}, 
+   "\nTuples ", {{0}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 0}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 0}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 0, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 1}]}, {
+     FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 1}]}}, "\nElements of GF ", {0, 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 0}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 0}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 0}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{0, 0, 1}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{1, 0, 1}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{0, 1, 1}], 
+    FiniteFields`GF[2, {1, 0, 1, 1}][{1, 1, 1}]}, 
+   "\nIdeal ", {-$CellContext`X + $CellContext`X^2, 1 + $CellContext`Y}, 
+   "\nVariables ", {$CellContext`X}],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.6614364752482357`*^9, {3.6614365583655176`*^9, 3.6614365788104115`*^9}, 
+   3.661436629149022*^9, 3.6614368601296225`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "0"}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      SubscriptBox[
+       RowBox[{"{", 
+        RowBox[{"1", ",", "0", ",", "0"}], "}"}], "2"]}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{
+  3.6614364765764074`*^9, {3.661436558553028*^9, 3.6614365790760345`*^9}, 
+   3.66143662918027*^9, 3.6614368601452494`*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{784, 801},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+PrintingCopies->1,
+PrintingPageRange->{32000, 32000},
+PrintingOptions->{"Magnification"->1.,
+"PaperOrientation"->"Portrait",
+"PaperSize"->{612, 792}},
+FrontEndVersion->"10.3 for Microsoft Windows (64-bit) (October 9, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 163, 2, 90, "Title"],
+Cell[746, 26, 181, 3, 28, "Subsubtitle"],
+Cell[CellGroupData[{
+Cell[952, 33, 108, 1, 63, "Section"],
+Cell[1063, 36, 90, 1, 30, "Text"],
+Cell[CellGroupData[{
+Cell[1178, 41, 252, 5, 29, "Item"],
+Cell[1433, 48, 279, 7, 29, "Item"],
+Cell[1715, 57, 164, 3, 29, "Item"]
+}, Open  ]],
+Cell[1894, 63, 221, 5, 31, "Input"],
+Cell[2118, 70, 389, 6, 31, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2544, 81, 97, 1, 63, "Section"],
+Cell[CellGroupData[{
+Cell[2666, 86, 156, 3, 31, "Input"],
+Cell[2825, 91, 269, 4, 52, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3131, 100, 344, 9, 31, "Input"],
+Cell[3478, 111, 3060, 89, 99, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6575, 205, 444, 12, 31, "Input"],
+Cell[CellGroupData[{
+Cell[7044, 221, 1498, 36, 124, "Print"],
+Cell[8545, 259, 7766, 205, 237, "Print"]
+}, Open  ]],
+Cell[16326, 467, 725, 23, 31, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

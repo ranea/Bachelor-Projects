@@ -1,0 +1,750 @@
+\documentclass[aspectratio=43,14pt,spanish]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel} % Changes theorem->teorema, proof->demostración...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% CONFIGURATION %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{} % Removes the navigation symbols :_)
+
+% Opens the PDF document in full screen by default :)
+%\hypersetup{pdfpagemode=FullScreen}
+
+%Language
+\selectlanguage{spanish}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% TITLE %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title[Teoría de Códigos]{Teoría de códigos y \\ polinomios torcidos}
+% \subtitle[Breve introducción]{Una introducción a la teoría de códigos algebraica}
+\author[A.]{Adrián}
+\institute[UGR]{Universidad de Granada}
+\date{\today}
+
+% Frame whenever a new section begins
+\AtBeginSection[]{
+    \begin{frame}[plain]
+        \begin{center}
+                \huge{\insertsection}
+        \end{center}
+    \end{frame}
+}
+
+% Frame whenever a new subsection begins
+\AtBeginSubsection[]{
+    \begin{frame}[plain]
+        \begin{center}
+                \huge{\insertsubsection}
+        \end{center}
+    \end{frame}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% COLORS %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% DECLARATIONS %%%%%%%%%%%%%%%%%
+
+\definecolor{c_gray_l}{HTML}{FAFAFA} % background light gray
+\definecolor{c_metal}{HTML}{37474F}  % background dark metal blue
+
+%%%%%%%%%%%%%%%% DEFINITIONS %%%%%%%%%%%%%%%%%*
+
+\setbeamercolor*{default}{
+    bg=c_metal,
+    fg=c_gray_l
+}
+
+\setbeamercolor*{palette primary}{
+    parent=default
+}
+
+\setbeamercolor*{palette secondary}{
+    bg=c_gray_l,
+    fg=c_metal
+}
+
+\setbeamercolor*{background canvas}{
+    parent = palette primary
+}
+
+\setbeamercolor*{normal text}{
+    fg = c_gray_l
+}
+
+\setbeamercolor*{titlelike}{
+    parent = palette secondary
+}
+
+\setbeamercolor*{section in toc}{
+    parent = palette primary
+}
+
+\setbeamercolor*{block title alerted}{
+    bg = red!60,
+    fg = c_gray_l
+}
+
+\setbeamercolor*{block body alerted}{
+    parent = palette secondary
+}
+
+\setbeamercolor*{block body alerted}{
+    parent = palette secondary
+}
+
+\setbeamercolor{structure}{fg=red!60}
+
+\renewcommand{\a}{\mathbf{a}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\e}{\mathbf{e}}
+\renewcommand{\c}{\mathbf{c}}
+\newcommand{\Fq}{\mathbb{F}_q}
+\newcommand{\Fqn}{\mathbb{F}_q^n}
+\newcommand{\Fqk}{\mathbb{F}_q^k}
+\newcommand{\Fbm}{\mathbb{F}_{2^m}}
+\newcommand{\Fqx}{\Fq[x]}
+\newcommand{\Fx}{\Fq[x]/(x^n - 1)}
+\newcommand{\Co}{C_{\theta}}
+\newcommand{\Fqxo}{\Fq[x, \theta]}
+\newcommand{\Fxx}{\Fq[x, \theta]/(x^n - 1)}
+\newcommand{\tc}{$\theta$-cíclico\ }
+\newcommand{\tcs}{$\theta$-cíclicos\ }
+
+\theoremstyle{definition} % titulo negrita, cuerpo en recta
+\newtheorem{teorema}{Teorema}[section]
+\newtheorem{proposicion}{Proposicion}[section]
+\newtheorem{lema}{Lema}[section]
+\newtheorem{ejemplo}{Ejemplo}[section]
+\newtheorem{definicion}{Definición}[section]
+\newtheorem{nota}{Nota}[section]
+
+\DeclareTextFontCommand{\emph}{\color{red!60}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+    \titlepage
+
+    \begin{frame}[t]{Contenidos}
+        \tableofcontents
+    \end{frame}
+    %--- Next Frame ---%
+
+    % Ejemplo
+    % \section{Ejemplo sección}
+    % \begin{frame}{Ejemplo frame}{Subtitulo frame}
+    %     \alert{Una alerta}
+    %
+    %     \begin{block}{Título de bloque}
+    %         Texto en bloque
+    %     \end{block}
+    %
+    %     Ejemplo frase
+    %
+    %     \begin{alertblock}{Ejemplo de bloque oculto 2 pasos}<2->
+    %         Ejemplo de cuerpo de bloque
+    %     \end{alertblock}
+    %
+    %
+    % \end{frame}
+    % %--- Next Frame ---%
+    % \begin{frame} % si no pongo titulo y subtitulo no aparece
+    %     \begin{alertblock}{Titulo de bloque}
+    %         $ 2 + 2 = 4$
+    %
+    %         % para ocultar algo
+    %         \uncover<2->{
+    %             Estoy oculto!
+    %         }
+    %     \end{alertblock}
+    % \end{frame}
+
+
+    \section{Introducción}
+    \begin{frame}{Los códigos correctores de errores}
+        Los códigos correctores de errores se utilizan para detectar y corregir errores que ocurren cuando la información se transmite por una canal con ruido.
+
+        \ \\
+
+        Algunas aplicaciones;
+
+        \begin{itemize}
+            \item Reproductores de CD
+            \item Envío de fotografías del espacio a la Tierra
+        \end{itemize}
+
+        \ \\
+
+        Para ello añaden redundancia al mensaje.
+    \end{frame}
+
+    \begin{frame}{El código de repetición}
+        Caso 1.
+        \begin{itemize}
+            \item 1 $\rightarrow$ <<sí>>
+            \item 0 $\rightarrow$ <<no>>
+            \item ¿Qué pasa si hay un error?
+        \end{itemize}
+
+        \ \\
+
+        Caso 2.
+        \begin{itemize}
+            \item 111 $\rightarrow$ <<sí>>
+            \item 000 $\rightarrow$ <<no>>
+            \item Se puede corregir un error:
+            \begin{itemize}
+                \item {001, 010, 100} $\rightarrow$ 000
+                \item {110, 101, 011} $\rightarrow$ 111
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \section{Preliminares}
+
+    \begin{frame}{Primeras definiciones}
+        % \begin{alertblock}{Alfabeto}
+        %     Conjunto de símbolos que utiliza un código. En nuestro caso, utilizaremos los cuerpos finitos $\Fq$.
+        % \end{alertblock}
+        Llamaremos \emph{alfabeto} al conjunto de símbolos que utiliza un código. En nuestro caso, utilizaremos los cuerpos finitos $\Fq$.
+
+        \ \\
+
+        Un \emph{código de bloque} consiste en una función codificadora $E: \mathbb{F}_q^k \to \mathbb{F}_q^n$ y una función decodificadora $D: \mathbb{F}_q^n \to \mathbb{F}_q^k $, con $k < n$. Los elementos de $\mathbb{F}_q^k$ se llaman \emph{mensajes}, los de $\Fqn$ palabras y los de $Im(E) \subset \Fqn$ se llaman \emph{palabras código}.
+    \end{frame}
+
+    \begin{frame}{Primeras definiciones}
+        % Mecionar: tenemos el mensaje 1 y el mensaje 0.
+        % La codificación lleva mensajes en palabras de ćodigo
+        Código de repetición:
+        \begin{itemize}
+            \item 111 $\rightarrow$ <<sí>> $\equiv$ 1
+            \item 000 $\rightarrow$ <<no>> $\equiv$ 0
+        \end{itemize}
+
+        \ \\
+
+        111 y 000 son las palabras código. La codificación y la decodificación son las siguientes:
+        \begin{align*}
+            E(1) &= 111 \\
+            E(0) &= 000 \\
+            D(111) &= 1 = D(110) = D(101) = D(011) \\
+            D(000) &= 0 = D(001) = D(010) = D(100)
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Paramétros importantes}
+        \begin{itemize}
+            \item La longitud de código, \emph{n}.
+            \item El número total de palabras código, \emph{M}.
+            \item La distancia mínima entre pares de palabras código, \emph{d}.
+        \end{itemize}
+
+        La distancia (de Hamming) entre dos palabra código $d(\x, \y)$ es el número de posiciones en los que $\x$ e $\y$ difieren. Esta distancia es una métrica en $\Fqn$.
+
+        \ \\
+
+        Código de repetición: \uncover<2->{$n = 3, M = 2, d = 3$}
+        \begin{itemize}
+            \item 111 $\rightarrow$ <<sí>>
+            \item 000 $\rightarrow$ <<no>>
+        \end{itemize}
+
+    \end{frame}
+
+    \begin{frame}{Corrigiendo y detectando errores}
+        \begin{itemize}
+            \item El \emph{decodificador} debe decidir que palabra código fue transmitida.
+            \item Esquema básico de decodificación \emph{vecino más cercano}: elegir la palabra código más <<cercana>> a la palabra recibida.
+            \item Supone que el canal es \emph{simétrico}: \begin{itemize}
+                \item Cada símbolo transmitido tiene la misma probabilidad de recibirse erróneamente.
+                \item Si un símbolo se recibe erróneamente, cada uno de los otros posibles errores es equiprobable.
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Corrigiendo y detectando errores}
+        \begin{alertblock}{Proposición}
+            Un código con una distancia mínima $d$ puede detectar hasta $d - 1$ errores y corregir hasta $\lfloor (d - 1)/2 \rfloor$ errores.
+        \end{alertblock}
+
+        \ \\
+
+        Código de repetición: $n = 3, M = 2, d = 3$
+        \begin{itemize}
+            \item 111 $\rightarrow$ <<sí>>
+            \item 000 $\rightarrow$ <<no>>
+        \end{itemize}
+        \uncover<2->{Detecta hasta 2 errores y corrige hasta 1 error.}
+
+        % Interpretación geométrica en clase
+    \end{frame}
+
+    \section{Teoría de códigos algebraica}
+    \begin{frame}{Códigos lineales}
+        Un \emph{código lineal}  de longitud $n$ sobre $\Fq$ es un subespacio vectorial del espacio vectorial $\Fqn$.
+
+        \ \\
+        % porqué codigos lineales
+
+        Un $[n, k]$-código lineal es un código lineal de longitud $n$ sobre sobre $\Fq$ con dimensión $k$ como subespacio vectorial.
+
+        \ \\
+
+        Podemos identificar el espacio de mensajes con el espacio vectorial $\mathbb{F}_q^k$. Así, las funciones de codificación/decodificación serían:
+        $$
+            E: \mathbb{F}_q^k \to \mathbb{F}_q^n, \
+            D: \mathbb{F}_q^n \to \mathbb{F}_q^k
+        $$
+        % modificamos mensajes de longitud $k$ para obtener palabras código de longitud $n$, con $n \geq k$ y viceversa
+    \end{frame}
+
+    \begin{frame}{Códigos lineales}
+        \begin{alertblock}{Proposición}
+            Sea $C$ un código lineal. Toda combinación lineal de palabras código de $C$ es una palabra código de $C$.
+        \end{alertblock}
+
+        \begin{alertblock}{Proposición}
+            La distancia mínima $d(C)$ de un código lineal $C$ es igual a la mínima distancia entre los pares $(\x, 0)$ con $\x$ no nulo.
+        \end{alertblock}
+        % ayuda a encontrar la distancia mínima de un código lineal
+    \end{frame}
+
+    \begin{frame}{Códigos lineales}
+        \begin{alertblock}{Límite de Singleton}
+            Si $C$ es un $[n, k]$-código lineal entonces $d \leq n - k + 1$.
+        \end{alertblock}
+
+        \ \\
+
+        A los códigos que consiguen la igualdad se les llama \emph{códigos separables de distancia máxima}.
+
+        \ \\
+
+        Ejemplo: \emph{Reed-Solomon}. Utilizado en CDs, DVDs, Blu-ray, QR, \dots.
+    \end{frame}
+
+    \begin{frame}{Códigos lineales}{Matriz generatriz y codificación}
+        Una matriz G de tamaño $k \times n$ cuyas filas forman una base para un $[n, k]$-código lineal se llama \emph{matriz generatriz} del código.
+
+        \ \\
+
+        Si $C$ es un $[n, k]$-código lineal con matriz generatriz $G$, entonces la función de codificación puede escribirse como:
+       \begin{align*}
+           E: \Fqk &\to \Fqn\\
+           \x &\mapsto \x G
+       \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos lineales}{Matriz generatriz y codificación. Ejemplo}
+        Sea $C$ el código linear sobre $\mathbb{F}_2^4$ de dimensión 2 con matriz generatriz
+        $$
+        G = \begin{pmatrix}
+            1 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 1
+        \end{pmatrix}
+        $$
+
+        \ \\
+
+        Multiplicando los elementos $\mathbb{F}_2^2$ con $G$ obtenemos el código $C$:
+        $$
+            \left\{
+            \uncover<2->{0000,}
+            \uncover<3->{1011,}
+            \uncover<4->{0101,}
+            \uncover<5->{1100}
+            \right\}
+        $$
+    \end{frame}
+
+
+    \begin{frame}{Códigos lineales}{Clases laterales y decodificación}
+        Sea $C$ un $[n, k]$-código lineal sobre $\Fq$ y $\a$ un vector de $\Fqn$. El conjunto $\a + C = \{\a + \x\ |\ \x \in C\}$ se llama una \emph{clase lateral} de $C$.
+
+        \ \\
+
+        \begin{alertblock}{Proposición}
+            Si $C$ es un $[n, k]$ código lineal sobre $\Fq$, entonces cada vector de $\Fqn$ está en alguna clase lateral de $C$, cada clase lateral contiene $q^k$ vectores y dos clases laterales son idénticas o disjuntas.
+        \end{alertblock}
+    \end{frame}
+
+
+    \begin{frame}{Códigos lineales}{Clases laterales y decodificación}
+        Esquema \emph{vecino más cercano}:
+        \begin{enumerate}
+            \uncover<2->{\item Particionamos $\Fqn$ en clases laterales de $C$.}
+            \uncover<3->{\item Para cada clase lateral, elegimos un representante con número de componentes no nulas mínimo.}
+        \end{enumerate}
+        \uncover<4->{Al recibir una palabra $\y$:}
+        \begin{enumerate}
+            \uncover<5->{\item Buscamos la clase lateral que contiene a $\y$. Esta será de la forma $\e + C$}
+            \uncover<6->{\item $\y - \e$ fue la palabra de código enviada.}
+        \end{enumerate}
+    \end{frame}
+
+    \begin{frame}{Códigos lineales}{Clases laterales y decodificación}
+        Sea $C = \left\{0000, 1011, 0101, 1100\right\}$.
+
+        \ \\
+
+        Las clases laterales de $C$ son:
+        \begin{align*}
+            \uncover<2->{0000 + C &= \left\{0000, 1011, 0101, 1110 \right\}} \\
+            \uncover<3->{1000 + C &= \left\{1000, 0011, 1101, 0110 \right\}} \\
+            \uncover<4->{0100 + C &= \left\{0100, 1111, 0001, 1010 \right\}} \\
+            \uncover<5->{0010 + C &= \left\{0010, 1001, 0111, 1100 \right\}}
+        \end{align*}
+
+    \end{frame}
+
+
+    \begin{frame}{Códigos cíclicos}
+        Un código lineal $C$ de longitud $n$ es \emph{cíclico} si verifica:
+        $$
+            (c_0, c_1, \dots, c_{n-1}) \in C \implies (c_{n-1}, c_0, \dots, c_{n-1}) \in C
+        $$
+
+        \ \\
+
+        Los códigos cíclicos se pueden implementar de forma eficiente usando dispositivos hardware llamados registros de desplazamiento.
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Representación polinomial}
+        \begin{align*}
+            \phi: \Fqn &\to \Fx \\
+            (c_0, c_1, \dots, c_{n-1}) & \mapsto c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}
+        \end{align*}
+
+        \begin{itemize}
+            \item $\phi$ es un isomorfismo de espacios vectoriales.
+        \end{itemize}
+
+        Son equivalentes:
+        \begin{align*}
+            i)&\ (c_0, c_1, \dots, c_{n-1}) \in C \implies (c_{n-1}, c_0, \ldots, c_{n-2}) \in C \\
+            ii)&\ x (c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}) \in \phi(C)
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Representación polinomial}
+        La equivalencia se basta en la siguiente igualdad en $\Fx$:
+        \begin{align*}
+            x &(c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}) \\
+                \uncover<2->{&= x c_0 + x c_1 x + \cdots + x c_{n-1} x^{n-1} \\}
+                \uncover<3->{&= c_0 x + c_1 x^2  + \cdots + c_{n-1} x^{n} \\}
+                \uncover<4->{&= c_{n-1} + c_0 x + c_1 x^2 + \cdots + c_{n-2} x^{n-1}}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Representación polinomial}
+        Si $f(x) \in \phi(C)$, entonces $$\left\{x f(x), x^2 f(x), x^3 f(x), \dots, x^{n-1} f(x)\right\}$$ también están en $\phi(C)$.
+
+        \ \\
+
+        Usando la linealidad de $C$ se deduce: $$\forall p(x) \in \Fx,\ p(x) f(x) \in \phi(C)$$
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Representación polinomial}
+        \begin{alertblock}{Teorema}
+            Los códigos cíclicos de longitud $n$ sobre $\Fq$ son justamente los ideales del anillo $\Fx$
+        \end{alertblock}
+
+        \begin{alertblock}{Proposición}
+            Sea $C$ un código cíclico de longitud $n$. Entonces $C$ está generado por un divisor  $g(x)$ de $(x^n - 1)$ en $\Fqx$. Si $g(x)$ mónico y de grado mínimo, $g(x)$ es único y se llama el \emph{polinomio generador} de $C$.
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Codificación}
+        Dado un mensaje $\a = (a_0, \dots, a_{n-1})$, y su representación polinomial $a(x)$, mediante multiplicación de polinomios podemos realizar la \emph{codificación}:
+        \begin{align*}
+            E: \Fx &\to \Fx \\
+            a(x) &\mapsto a(x)g(x)
+        \end{align*}
+    \end{frame}
+
+
+    \begin{frame}{Códigos cíclicos}{Matriz generatriz}
+        \begin{lema}
+            Sea $C$ un código cíclico con polinomio generador $g(x) = g_0 + g_1 x + \cdots + g_r x^r$ de grado $r$. Entonces la dimensión de $C$ es $n - r$ y una matriz generatriz para $C$ es la siguiente matriz $(n - r) \times n$:
+            $$
+            G = \begin{pmatrix}
+                    g_0 & g_1 & \cdots & g_r & 0 & 0 & \cdots & 0 \\
+                    0 & g_0 & g_1 & \cdots & g_r & 0 & \cdots & 0 \\
+                    0 & 0 & g_0 & g_1 & \cdots & g_r & \ddots & \vdots \\
+                    \vdots & \vdots & \ddots & \ddots & \ddots & \cdots & \ddots & 0  \\
+                    0 & 0 & \cdots & 0 & g_0 & g_1 & \cdots & g_r
+                \end{pmatrix}
+            $$
+        \end{lema}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Matriz generatriz. Demostración}
+        $g_0$ no puede ser 0 (en caso contrario $(0, g_1, \ldots, g_r, 0, \ldots) \in C \Rightarrow (g_1, \ldots, g_r, 0, \ldots ) \in C$)
+
+        \ \\
+
+        Las $n - r$ filas de la matriz $G$ son linealmente independientes por la forma escalonada de la matriz.
+
+        \ \\
+
+        Estas $n - r$ filas representan los polinomios código $g(x), x g(x), \ldots, x^{n - r - 1}g(x)$. Veamos que forman un sistema de generadores.
+
+    \end{frame}
+    \begin{frame}{Códigos cíclicos}{Matriz generatriz. Demostración}
+        $c(x) \in C \implies \exists m(x) \in \Fx$ tal que:
+        \begin{align*}
+            c(x) &= m(x) g(x) \\
+                 &= (m_0 + m_1 x + \cdots + m_{n - r - 1} x^{n - r - 1}) g(x) \\
+                 &= m_0 g(x) + m_1 x g(x) + \cdots m_{n - r - 1} x^{n - r - 1} g(x)
+        \end{align*}
+        $\implies$ G es una matriz generatriz de $C$ y la dimensión de $C$ es $n - r \qed$.
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Listado de códigos}
+        \begin{alertblock}{Proposición}
+            Hay una correspondencia uno a uno entre los divisores mónicos de $x^n - 1$ en $\Fqx$ y los códigos cíclicos sobre $\Fq$ de longitud $n$.
+        \end{alertblock}
+
+        Este resultado facilita el listado  de todos los códigos cíclicos de una longitud dada. Veamos un ejemplo.
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Listado de codigos}
+        Vamos a calcular todos los códigos cíclicos sobre $\mathbb{F}_2$ de longitud 4. La factorización de $x^4 + 1$ es $(x + 1)^4$, luego sus factores mónicos son:
+        \begin{align*}
+            \uncover<2->{g_0(x) &= 1} \\
+            \uncover<3->{g_1(x) &= x + 1} \\
+            \uncover<4->{g_2(x) &= (x + 1)^2 = x^2 + 1} \\
+            \uncover<5->{g_3(x) &= (x + 1)^3 = x^3 + x^2 + x + 1} \\
+            \uncover<6->{g_4(x) &= (x + 1)^4 = x^4 + 1} \\
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos}{Listado de códigos. Ejemplo}
+        El primer y el último factor generan los códigos triviales $\mathbb{F}_2[x]/(x^4 + 1)$ y $\{0\}$ respectivamente. El resto de polinomios generan los códigos:
+        \begin{align*}
+            \uncover<2->{g_1(x) &\rightarrow C_1 = \left\{0, x + 1, x^{2} + 1, x^{2} + x, x^{3} + 1, \right. \\
+            & \left. x^{3} + x, x^{3} + x^{2}, x^{3} + x^{2} + x + 1\right\}} \\
+            \uncover<3->{g_2(x) &\rightarrow C_2 = \left\{0, x^{2} + 1, x^{3} + x, x^{3} + x^{2} + x + 1\right\}} \\
+            \uncover<4->{g_3(x) &\rightarrow C_3 = \left\{0, x^{3} + x^{2} + x + 1\right\}}
+        \end{align*}
+
+        \uncover<5->{$C_1$ es un código $[4, 3]$-cíclico, $C_2$ es un código $[4, 2]$-cíclico y $C_3$ es un código $[4, 1]$-cíclico.}
+    \end{frame}
+
+    \section{Códigos cíclicos torcidos}
+
+    \begin{frame}{Códigos cíclicos torcidos}
+        Sea $\theta$ un automorfismo de $\Fq$. Un código \emph{$\theta$-cíclico} es un código lineal $\Co$ verificando:
+        $$
+        (a_0, a_1, \dots, a_{n-1}) \in \Co \Rightarrow (\theta(a_{n-1}), \theta(a_0), \dots, \theta(a_{n-2}))
+        $$
+
+        \ \\
+
+        Consideramos el \emph{anillo de polinomios torcidos} sobre $\Fq$, esto es, la extensión de Ore:
+        $$
+            \Fqxo = \{a_0 + a_1 x + \cdots + a_{n-1} x^{n-1},\ a_i \in \Fq,\ n \in \mathbb{N}\}
+        $$
+        donde la regla de multiplicación es $x a = \theta(a) x$.
+    \end{frame}
+
+
+    \begin{frame}{Códigos cíclicos torcidos}{Anillo de polinomios torcidos}
+        $\Fqxo$
+        \begin{itemize}
+            \item tiene un algoritmo de división euclídeo por la izquierda y por la derecha.
+            \item es un dominio de ideales principales por la izquierda y por la derecha.
+        \end{itemize}
+
+        \ \\
+
+        Denotamos por $K \subset \Fq$ al subcuerpo cuyos elementos se quedan fijos por $\theta$.
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Centro del anillo de polinomios torcidos}
+        \begin{alertblock}{Proposición}
+            Los elementos centrales de $\Fqxo$ son de la forma
+            $\sum_{i = 0}^{m}c_i x^{i |\theta|}$ donde $c_i \in K$ y $|\theta|$ es el orden del automorfismo $\theta$. Simbólicamente:
+            $$
+                Z(\Fqxo) = K[x^{|\theta|}]
+            $$
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Centro del anillo de polinomios torcidos. Demostración}
+        Sea $g(x) = \sum_{i = 0}^{m}g_i x^i \in Z(\Fqxo)$.
+        \begin{align*}
+            g(x) a_0 &= \sum_{i = 0}^{m}g_i \theta^i(a_0) x^i \\
+            a_0 g(x) &= \sum_{i = 0}^{m}a_0 g_i x^i
+        \end{align*}
+        $\implies a_0 = \theta^i(a_0)\ \forall a_0 \in \Fq \implies g(x) \in \Fq[x^{|\theta|}]$
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Centro del anillo de polinomios torcidos. Demostración}
+        $g(x) = \sum_{i = 0}^{m}g_i x^i$
+        \begin{align*}
+            g(x)\  b_1 x &= \sum_{i = 0}^{m}g_{i} \theta^{i}(b_1) x^{i+1} \\
+            b_1 x \  g(x) &= \sum_{i = 0}^{m}b_1 \theta(g_{i}) x^{i+1}
+        \end{align*}
+        $\implies g_{i} = \theta(g_{i}) \implies g_i \in K \implies g(x) \in K[x^{|\theta|}]$
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Centro del anillo de polinomios torcidos. Demostración}
+        Sea $c\ x^{j|\theta|} \in K[x^{|\theta|}]$,
+        $\ f(x) = \sum_{i = 0}^{m}f_i x^i \in \Fqxo$.
+
+        \begin{align*}
+            c\ x^{j|\theta|} \times f(x) &=
+                \sum_{i = 0}^{m}c\ \theta^{j|\theta|}(f_{i}) x^{i+j|\theta|} \\
+            f(x) \times c\ x^{j|\theta|} &=
+                \sum_{i = 0}^{m}f_{i} \theta^{i}(c) x^{i+j|\theta|}
+        \end{align*}
+        $\implies c\ x^{j|\theta|} \in Z(\Fqxo)$
+        % \implies K[x^{|\theta|}] \subset Z(\Fqxo)$ (por linealidad).
+
+        \ \\
+
+        Por linealidad, $K[x^{|\theta|}] \subset Z(\Fqxo) \qed$
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Resultados conocidos}
+        \begin{alertblock}{Proposición}
+            Los elementos centrales de $\Fqxo$ son los generadores de los ideales biláteros de $\Fqxo$ y $(x^n - 1) \subset \Fqxo$ es un ideal bilátero.
+        \end{alertblock}
+        \begin{alertblock}{Proposición}
+            El anillo $\Fxx$ es un anillo de ideales principales por la izquierda cuyos ideales por la izquierda están generados por un divisor de $x^n - 1$ en $\Fqxo$.
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Representación polinomial <<torcida>>}
+        \begin{align*}
+            \phi: \Fqn &\to \Fxx \\
+            (c_0, c_1, \dots, c_{n-1}) & \mapsto c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}
+        \end{align*}
+
+        \begin{itemize}
+            \item $\phi$ es un isomorfismo de $\Fq$-módulos
+        \end{itemize}
+
+        Son equivalentes:
+        \begin{align*}
+            &\ (c_0, c_1, ..., c_{n-1}) \in C \Rightarrow (\theta(c_{n-1}), \theta(c_0), ..., \theta(c_{n-2})) \in C \\
+            &\ x (c_0 + c_1 x + \ldots + c_{n-1} x^{n-1}) \in \phi(C)
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Representación polinomial <<torcida>>}
+        La equivalencia se basta en la siguiente igualdad en $\Fxx$:
+        \begin{align*}
+            x &(c_0 + c_1 x + \cdots + c_{n-1} x^{n-1}) \\
+                \uncover<2->{&= x c_0 + x c_1 x + \cdots + x c_{n-1} x^{n-1}  \\}
+                \uncover<3->{&= \theta(c_0) x + \theta(c_1) x^2  + \cdots + \theta(c_{n-1}) x^{n} \\}
+                \uncover<4->{&= \theta(c_{n-1}) + \theta(c_0) x + \theta(c_1) x^2 + \cdots + \theta(c_{n-2}) x^{n-1}}
+        \end{align*}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Representación polinomial <<torcida>>}
+        Si $f(x) \in \phi(C)$, entonces $$\left\{x f(x), x^2 f(x), x^3 f(x), \dots, x^{n-1} f(x)\right\}$$ también están en $\phi(C)$.
+
+        \ \\
+
+        Usando la linealidad de $C$ se deduce: $$\forall p(x) \in \Fxx,\ p(x) f(x) \in \phi(C)$$
+    \end{frame}
+
+
+    \begin{frame}{Códigos cíclicos torcidos}{Representación polinomial <<torcida>>}
+        \begin{alertblock}{Teorema}
+            Los códigos \tcs de longitud $n$ sobre $\Fq$ son justamente los ideales por la izquierda del anillo $\Fxx$.
+        \end{alertblock}
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Representación polinomial <<torcida>>}
+        Un factor por la derecha de grado $n - k$ de $x^n - 1$ genera un $[n, k]$-código lineal.
+
+        \ \\
+
+        $\Fqxo$ no es en general un dominio de factorización única. Como hay muchos mas factores por la derecha que en el caso conmutativo, existen más codigos \tcs que cíclicos.
+
+        \ \\
+
+        Nótese que aunque la factorización no sea única, los grados de los polinomios torcidos irreducibles en la factorización de un elemento en $\Fqxo$ si son únicos salvo permutación.
+
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Ejemplo}
+        Vamos a buscar todos los [4, 2]-códigos \tcs con $\theta(a) = a^2$ sobre $\mathbb{F}_4$.
+
+        \ \\
+
+        Sea $\alpha$ un generador del grupo multiplicativo de $\mathbb{F}_4$, esto es, un cero de $z^2 + z + 1 \in \mathbb{F}_2$ en $\overline{\mathbb{F}_2}$. Así, $\mathbb{F}_4 = \left\{0, 1, \alpha, \alpha^2 \right\}$.
+
+        \ \\
+
+        Calculamos los factores mónicos por la derecha de grado dos de $x^4 + 1 \in \mathbb{F}_4[x, \theta]$.
+
+    \end{frame}
+
+    \begin{frame}{Códigos cíclicos torcidos}{Ejemplo}
+        \begin{align*}
+            g_1(x) &= x^2 + 1 \\
+            g_2(x) &= x^2 + \alpha x + \alpha ^2 \\
+            g_3(x) &=  x^2 + \alpha^2 x + \alpha \\
+            g_4(x) &=  x^2 + \alpha^2 x + \alpha^2 \\
+            g_5(x) &=  x^2 + x + \alpha \\
+            g_6(x) &=  x^2 + x + \alpha^2 \\
+            g_7(x) &= x^2 + \alpha x + \alpha
+        \end{align*}
+
+    \end{frame}
+    \begin{frame}{Códigos cíclicos torcidos}{Ejemplo}
+
+        Las factorizaciones correspondientes son:
+        \begin{align*}
+            x^4 + 1 &= (x^2 + 1)(x^2 + 1) \\
+                    &= (x^2 + \alpha x + \alpha)(x^2 + \alpha x + \alpha ^2)\\
+                    &= (x^2 + \alpha^2 x + \alpha^2)(x^2 + \alpha^2 x + \alpha)\\
+                    &= (x^2 + \alpha^2 x + \alpha)(x^2 + \alpha^2 x + \alpha^2)\\
+                    &= (x^2 + x + \alpha^2)(x^2 + x + \alpha)\\
+                    &= (x^2 + x + \alpha)(x^2 + x + \alpha^2)\\
+                    &= (x^2 + \alpha x + \alpha ^2)(x^2 + \alpha x + \alpha)
+        \end{align*}
+
+    \end{frame}
+    \begin{frame}{Códigos cíclicos torcidos}{Ejemplo}
+
+        Como  $x^4 + 1 = (x + 1)(x + 1)(x + 1)(x + 1)$, los factores irreducibles de $x^4 + 1 \in \mathbb{F}_4[x, \theta]$ en cualquier descomposicón son todos de grado uno. Por lo tanto, ninguno de los $g_i(x)$ anteriores es irreducible.
+
+    \ \\
+
+        El polinomio $g_1$ genera el único [4, 2]-código cíclico sobre $\mathbb{F}_4$. Los otros polinomios generan un código $[4, 2]$ (los seis códigos son equivalentes).
+    \end{frame}
+
+    \begin{frame}[plain]
+        Para más información:
+
+        \center{\emph{\url{www.github.com/ranea/teoriacodigos}}}
+
+    \end{frame}
+
+    \begin{frame}[plain]
+        %\normalsize{}
+        \huge{GRACIAS}
+        \vspace{2mm}
+        \hrule
+    \end{frame}
+
+\end{document}
