@@ -22,14 +22,14 @@ Python 3 and R must be installed to execute the experiment.
 
 1. Generate the random vectors:
 
-    python3 random_vectors.py vector.csv
+        python3 random_vectors.py vector.csv
 
 2. Run the benchmark:
 
-    python3 benchmark.py vector.csv execution_time.csv
+        python3 benchmark.py vector.csv execution_time.csv
 
 3. Plot the execuion time:
 
-    Rscript execution_time.csv
+        Rscript execution_time.csv
 
 ![Execution time plot](results/plot.png)
