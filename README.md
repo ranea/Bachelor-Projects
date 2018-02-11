@@ -9,4 +9,5 @@ List of projects:
  - [Teoria de Códigos](TeoriaCodigos)
  - [Hashing Doble](HashingDoble)
  - [Problema del Caballo](ProblemaDelCaballo)
+ - [ProcesamientoImagenes](ProcesamientoImagenes)
  
